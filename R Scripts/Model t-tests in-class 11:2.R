@@ -1,0 +1,6 @@
+require(palmerpenguins)
+dat_ade = droplevels(subset(penguins, species == "Adelie"))
+hist(dat_ade$body_mass_g, main = "Adelie Penguins: Body Mass", xlab = "body mass (g)")
+boxplot(dat_ade$sex)
+boxplot(dat_ade$body_mass_g~dat_ade$sex)
+t.test()      

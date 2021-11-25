@@ -1,0 +1,31 @@
+---
+title: "Code Chunk Demo"
+author: "Alex Fink"
+date: "10/20/2021"
+output: html_document
+---
+
+
+
+
+```
+
+```{r load penguins}
+require(palmerpenguins)
+
+```
+
+#different penguin plots {.tabset .tabset-pills}
+The following tabs contain different plot types
+
+## Histogram
+
+```{r flipper length histogram. 
+fig.asp= 1}
+hist(penguins$flipper_length_mm)
+
+## Another Histogram (Bill Length)
+```{r bill length histogram, echo
+= FALSE}
+
+}

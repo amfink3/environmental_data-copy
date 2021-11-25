@@ -1,0 +1,35 @@
+---
+title: "Code Chunk"
+author: "Alex Fink"
+date: "10/21/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+{r load_penguin_data, echo=TRUE, echo=TRUE}
+require(palmerpenguins)
+head(penguins)
+```
+{r simple pairplot, echo=FALSE}
+plot(penguins[ , 3:5])
+```
+
+# Tabset Example {tabset .tabset-pills}
+
+## Tab 1
+
+Tab 1 Contents 
+
+## Tab 2
+
+Don't be such a pill!
+
+## Tab 3
+
+Tab 3 Contents 
+
+# Next Section
+
+Non-tabbed material
