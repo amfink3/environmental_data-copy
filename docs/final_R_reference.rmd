@@ -1,0 +1,198 @@
+---
+title: "Final Project R Reference"
+author: "Alex Fink"
+date: "12/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Reference Guide {.tabset .tabset-pills}
+
+## Loading Data and Packages
+
+```{r}
+require(here)
+require(palmerpenguins)
+library(palmerpenguins)
+```
+
+```{r}
+require(here)
+ginkgo <- read.csv(here("data", "ginkgo_data_2021.csv"))
+```
+
+
+
+## Data Structures
+
+
+### c()
+
+The function c() combines or concatenates its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements).
+
+* All of the elements must be of the same type.
+* I can’t combine character and numeric types in the same call to c()
+
+Here’s two examples using numeric and character data types:
+
+```{r}
+## Create a vector of numbers:
+num_vec  = c(1, 4, 8, 9, 13)
+
+## Create a vector of characters:
+char_vec = c("a", "fish", "data is cool")
+
+## Typing the name of the vector into the console prints the contents
+num_vec
+
+## The print() function accomplishes the same task:
+print(char_vec)
+
+
+```
+
+### Length ()
+* x -  an R object. For replacement, a vector or factor.
+* value - a nn-negative integer or double (which will be rounded down).
+```{r}
+## Calculating the size of my vector
+
+length(num_vec)
+
+```
+### matrix ()
+* creates a matrix from the given set of values.
+```{r}
+vector1 = c(2,4,6,8,10,12)
+matrix(data = 6, nrow = 3, ncol = 3)
+
+
+```
+### data.frame()
+* couples variables which share similar properties of lists and matrices
+
+```{r}
+a = c(2)
+b = c(4)
+c = c(6)
+df = data.frame(a,b,c)
+
+
+```
+ * Ginkgo Data
+```{r}
+nrow(ginkgo)
+ncol(ginkgo)
+dim(ginkgo)
+```
+
+
+## Subsetting
+```{r}
+ginkgo$notch_depth
+
+```
+
+```{r}
+ginkgo_row_1 <- ginkgo[1,]
+ginkgo_row_1
+ginkgo_row_2_col_3 <- ginkgo[2,3]
+ginkgo_row_2_col_3
+ginkgo_col_3 <- ginkgo[,3]
+ginkgo_col_3
+
+```
+
+```{r}
+data_Adelie <- subset(penguins, species == "Adelie")
+data_Adelie
+```
+
+
+## Numerical Data Exploration 
+### summary
+* Used to produce result summaries of the results of model fitting functions
+```{r}
+require(palmerpenguins)
+head(penguins)
+dat_penguins = data.frame(penguins)
+summary(penguins)
+```
+### mean
+* Function for the arithmetic mean
+```{r}
+mean(penguins$bill_depth_mm,na.rm = TRUE)
+```
+### sd()
+* Computes the sd of the values of x
+```{r}
+sd(penguins$bill_depth_mm,na.rm = TRUE)
+```
+
+## Graphical Data Exploration 
+
+### Scatterplot
+```{r}
+plot(max_width  ~ max_depth,data = ginkgo, xlab = "max_depth", ylab = "max_width", pch = 3, cex = 1.5, main = "ginkgo scatterplot", col = "blue", xlim = c(0,65), ylim = c(0,50))
+     
+```
+
+```{r}
+
+hist(penguins$flipper_length_mm , xlab = "flipper length", ylab = "frequency", main = "penguin flipper length histogram" ,col = "red", breaks = 12)
+```
+
+```{r}
+boxplot(ginkgo$petiole_length, xlab = "petiole length", ylab= "frequency", main = "petiole length boxplot",col = "yellow")
+```
+
+```{r}
+boxplot(max_depth~seeds_present, data = ginkgo,xlab = "max depth",ylab = "seeds present",main = "boxplot of seeds present", col = "green")
+```
+```{r}
+par(mfrow = c(2,2))
+    
+hist(penguins$body_mass_g, xlab = "body mass", ylab = "frequency", main = "histogram of body mass", col = "purple")
+hist(penguins$bill_depth_mm,xlab = "bill depth", ylab = "frequency", main = "histogram of bill depth", col = "brown")
+hist(ginkgo$notch_depth,xlab = "notch depth", ylab = "frequency", main = "ginkgo notch depth", col = "green")
+hist(ginkgo$petiole_length, xlab = "petiole length", ylab = "frequency", main = "histogram of petiole length", col = "red")
+
+```
+
+## Distribution Functions
+```{r}
+vector1 = c(2,4,6,8,10,12)
+```
+
+### dnorm()
+```{r}
+dnorm(3, 5, 0.5, log = FALSE)
+```
+### pnorm()
+```{r}
+pnorm(3, 5, 0.5, log = FALSE)
+```
+###qnorm()
+```{r}
+qnorm(0.8, mean = 50, sd = 1, lower.tail = TRUE, log.p = FALSE )
+```
+###dbinom
+```{r}
+dbinom(3, 5, 0.5, log = FALSE)
+```
+### pbinom()
+```{r}
+pbinom(3, 5, 0.5, log = FALSE)
+```
+### qbinom()
+```{r}
+qbinom(0.3, size =  5, prob = 0.5,lower.tail = TRUE, log.p = FALSE )
+```
+
+
+
+
+...

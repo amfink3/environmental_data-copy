@@ -1,0 +1,199 @@
+---
+title: "Final Project Part 2"
+author: "Alex Fink"
+date: "12/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+delomys <- read_csv("data/delomys.csv")
+View(delomys)
+
+
+body_mass = summary(delomys$body_mass)
+body_mass
+
+body_length = summary(delomys$body_length)
+body_length
+
+
+shapiro.test(body_mass)
+
+shapiro.test(body_length)
+```
+
+## Scatterplot by body mass and length
+```{r}
+
+plot(body_mass~body_length, data = delomys,xlab = "body mass",ylab = "body length", main = "scatterplot by body mass and body length", col = "red")
+
+```
+
+## Histogram of body mass
+```{r}
+hist(delomys$body_mass, xlab = "body mass", ylab = "frequency", main = " Histogram of body mass", col = "blue")
+```
+
+## Histogram of body length
+```{r}
+hist(delomys$body_length, xlab = "body length", ylab = "frequency", main = " Histogram of body length", col = "purple")
+```
+
+## Conditional boxplot of species on body mass 
+```{r}
+boxplot(body_mass~binomial,data = delomys,xlab = "species (bonomial)",ylab = "body mass", main = "conditional boxplot of species on body mass",col = "red" )
+```
+
+## Conditional boxplot of species on sex
+
+```{r}
+boxplot(body_mass~sex,data = delomys, xlab = "sex", ylab = "body mass", main = "condional boxplot of sex on body mass",col = "orange")
+```
+
+## Conditonal boxplot of sex and species
+```{r}
+boxplot(body_mass~binomial*sex,data = delomys, xlab = "sex & species",ylab = "body mass", main = "conditional boxplot of sex and species", col = "green")
+```
+
+# Questions 1-4 {.tabset .tabset-pills}
+## Q1:The relationship between body mass and length is curved. As body mass increases so does body length.
+
+## Q2:The histogram of body mass is normally distributed because most of the points fall within the mean. The histogram of length is not normally distributed, the pvalues are not near the mean. 
+
+## Q3:I think body mass is normally distributed because the graph looks pretty even where length is very spread out.
+
+## Q4:From the graphs there is almost no difference in body mass based on sex or species.
+
+# Model Building
+## Simple linear regression
+```{r}
+fit_1 = 
+  lm(
+    formula = body_length ~ body_mass,
+    data = delomys)
+
+```
+
+ANOVA
+```{r}
+fit_2 = 
+  lm(
+    formula =  body_mass ~ sex,
+    data = delomys)
+
+fit_3 = 
+  lm(
+    formula =  body_mass ~ binomial,
+    data = delomys)
+
+fit_4 = 
+  lm(
+    formula = body_mass ~ sex + binomial,
+    data = delomys)
+
+fit_5 = 
+  lm(
+    formula = body_mass ~ sex * binomial,
+    data = delomys)
+
+```
+
+```{r}
+
+
+
+## Residual histograms
+```{r}
+head(residuals(fit_1))
+hist(fit_1$residuals, xlab = "residuals",ylab = "frequency",main = "histogram of fit_1 residuals",col = "yellow")
+
+head(residuals(fit_2))
+hist(fit_2$residuals, xlab = "residuals",ylab = "frequency",main = "histogram of fit_2 residuals",col = "red")
+
+head(residuals(fit_3))
+hist(fit_3$residuals, xlab = "residuals",ylab = "frequency",main = "histogram of fit_3 residuals",col = "green")
+
+head(residuals(fit_4))
+hist(fit_4$residuals, xlab = "residuals",ylab = "frequency",main = "histogram of fit_4 residuals",col = "blue")
+
+head(residuals(fit_5))
+hist(fit_5$residuals, xlab = "residuals",ylab = "frequency",main = "histogram of fit_5 residuals",col = "purple")
+
+
+```
+## Shapiro test
+```{r}
+shapiro.test(fit_1$residuals)
+
+shapiro.test(fit_2$residuals)
+
+shapiro.test(fit_3$residuals)
+
+shapiro.test(fit_4$residuals)
+
+shapiro.test(fit_5$residuals)
+```
+
+# Questions 5-6 {.tabset .tabset-pills}
+Q5:I conclude that each residual graphically is normal except for fit_1. Numerically they are not normal looking at the p-values.
+
+Q6:The violations of normality assumption is not as severe for all of the models,because only the fit_1 graph is skewed and the p-value is low and not significant.
+
+```{r echo=FALSE}
+knitr::kable(coef(summary(fit_1)),digits = 2)
+
+(76.12 + 0.88 * 0)
+
+knitr::kable(coef(summary(fit_3)),digits = 2)
+
+```
+#  Questions 7-9 {.tabset .tabset-pills}
+Q7:The magnitude of the mass/length relationship is 0.88
+
+Q8:The expected length of animal that weighs 100g is 164.12
+
+Q9:The expected length of animal that weighs 0g is 76.12
+
+# Questions 10-13{.tabset .tabset-pills}
+Q10:The base level for sex is 42.71
+
+Q11:The base case for binomial is 46.75
+
+Q12:The heavier sex is female
+
+Q13:The heavier species is Dorsalis
+
+# Questions 14-16 {.tabset .tabset-pills}
+```{r}
+fit_1
+fit_2
+fit_3
+fit_4
+fit_5
+
+``` 
+Q14:Sex and species are a good predictor of body mass if you are looking at p-values. If you are looking at the graphs, sex and species are not good predictors because all the boxes are about the same size and spread.
+
+Q15:There is not a significant interaction between sex and species.
+
+Q16:The significance measured by the p-values of either main effects differ between the single-predictor models, the additive model,and the interactive model is they don't really differ in p-values.they are all less than.05 which means I can reject the null. With different models you are getting more information.
+
+## Model Comparison: Body Mass
+```{r}
+AIC(fit_1)
+AIC(fit_2)
+AIC(fit_3)
+AIC(fit_4)
+AIC(fit_5)
+```
+
+# Questions 17-18
+Q17:The two models with the lowest AIC are fit_4 and fit_5
+
+Q18:Out of the two models I would choose fit_4 because, AIC values are similar but fit_4 is my additive model which is more simple than fit_5 which is the interactive.
+
